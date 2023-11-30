@@ -14,7 +14,7 @@ WiFi Bluetooth PLC (4채널 릴레이, 온습도센서, ESP32) KC인증
 - 온습도 센서 : 모델 : AHT21, 습도 측정 범위: 0-100% RH, 온도 범위: -40 'C-120 'C, 습도 정확도 범위: 10% RH에서 95% RH, 습도 히스테리: ± 1% RH, 측정 시간: 50ms, 응답 시간: 5 초, 커뮤니케이션: I2C
 
 # "Play 스토어" 에서 어플을 다운로드 하세요 프로그램 하지 않아도 원격으로 모니터링/제어 할 수 있습니다.  
-그림을 크릭하세요
+그림을 크릭하세요  
 [![Video Label]![21-3 안드로이드 어플 사용 블루투스 와이파이 MQTT 통신](https://github.com/kdi6033/i2r-03/assets/37902752/4d97b216-06a0-4601-bed9-37c0e841eae0)
 (http://img.youtube.com/vi/59USvjy2toI/0.jpg)](https://youtu.be/FT0muFM24xc)
 
