@@ -32,6 +32,12 @@ BLE 를 활용해 근거리 제어가 가능합니다. IoT와 관련해 다양�
 
 # Input Output 아두이노 프로그램
 입력과 출력, 온도, 습도를 측정하는 아두이노 기본 프로그램
-[![Input Output 아두이노 프로그램](https://img.youtube.com/vi/CTg_foy56oA/0.jpg)](https://youtu.be/CTg_foy56oA)]
+[![Input Output 아두이노 프로그램](https://img.youtube.com/vi/CTg_foy56oA/0.jpg)](https://youtu.be/CTg_foy56oA)]  
 
+# MQTT 통신 연결하기
+아두이노로 mqtt 통신을 연결한다.
+ArduinoJson.h 를 사용해 데이터 처리방법을 설명한다.
+IoT MQTT Panel을 이용해 스마트폰으로 보드의 Relay를 제어 한다.
+이 프로그램을 이용해 인터넷 상에서 원격으로 입력과 출력을 제어 할 수 있습니다.
+[![MQTT 통신 연결하기](https://img.youtube.com/vi/u4NejCu5xnw/0.jpg)](https://youtu.be/u4NejCu5xnw)]  
 
