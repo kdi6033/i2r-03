@@ -17,7 +17,7 @@ WiFi Bluetooth PLC (4채널 릴레이, 온습도센서, ESP32) KC인증
 그림을 크릭하세요  
 [![Video Label]![21-3 안드로이드 어플 사용 블루투스 와이파이 MQTT 통신](https://github.com/kdi6033/i2r-03/assets/37902752/4d97b216-06a0-4601-bed9-37c0e841eae0)
 (http://img.youtube.com/vi/59USvjy2toI/0.jpg)](https://youtu.be/FT0muFM24xc)
-
+   
 <iframe width="560" height="315" src="https://youtu.be/FT0muFM24xc" frameborder="0" allowfullscreen></iframe>
 
 1) 4채널 릴레이  
