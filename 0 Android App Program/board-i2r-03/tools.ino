@@ -21,11 +21,13 @@ void parseJSONPayload(byte* payload, unsigned int length) {
     const char *ssid = doc["ssid"] | "";
     const char *password = doc["password"] | "";
     const char *mqttBroker = doc["mqttBroker"] | "";
+    const char *email = doc["email"] | "";
     const bool use = doc["wifiUse"] | false;
 
     wifiSave.ssid = ssid;
     wifiSave.password = password;
     wifiSave.mqttBroker=mqttBroker;
+    wifiSave.email=email;
     wifiSave.use = use;
     returnMsg=wifiSave.ssid+" 정보가 저장 되었습니다.";
     writeToBle(101);
@@ -73,8 +75,8 @@ void returnMessage() {
   DynamicJsonDocument responseDoc(1024);
   responseDoc["order"] = 101;
   responseDoc["message"] = returnMsg;
-  responseDoc["humidity"] = dev.humidity;
-  responseDoc["temperature"] = dev.temperature;
+  // responseDoc["humidity"] = dev.humidity;
+  // responseDoc["temperature"] = dev.temperature;
   dev.sendData="";
   serializeJson(responseDoc, dev.sendData);
   Serial.print("returnMessage: ");
@@ -101,40 +103,58 @@ void doTick() {
     dev.humidity = humidity_event.relative_humidity;
     dev.temperature = temp_event.temperature;
 
-    dev.strInPre=dev.strIn;
     strIn=String(dev.in[0])+String(dev.in[1])+String(dev.in[2])+String(dev.in[3]);
     strOut=String(dev.out[0])+String(dev.out[1])+String(dev.out[2])+String(dev.out[3]);
     String strHumidity = String(dev.humidity, 1);
     String strTemp = String(dev.temperature, 1);
+    dev.strInPre=dev.strIn;
+    // 데이터 변경 여부 확인
+    bool dataChanged = !dev.strIn.equals(dev.strInPre) || dev.temperature != lasttemperature || dev.humidity != lasthumidity;
 
-    dev.strIn = strIn + strOut + strHumidity + strTemp;
-
-    if( !dev.strIn.equals(dev.strInPre)) {
+    if (dataChanged) {
       DynamicJsonDocument responseDoc(1024);
       responseDoc["order"] = 3;
       responseDoc["in"] = strIn;
       responseDoc["out"] = strOut;
       responseDoc["humidity"] = strHumidity;
       responseDoc["temperature"] = strTemp;
+
+      // 전송 데이터 설정
       dev.sendData="";
       serializeJson(responseDoc, dev.sendData);
-      Serial.print("wifi.selectMqtt: ");
-      Serial.println(wifi.selectMqtt);
-      if(wifi.selectMqtt == true) {
+      // 전송 로직
+      // 조건 1: BLE 연결되어 있으면 BLE를 통해 전송
+      if (ble.isConnected && pCharacteristic) {
+      writeToBle(2);
+      Serial.println("Data sent via BLE");
+      }
+      // 조건 2: BLE 연결이 없고, MQTT 연결 정보가 있으며, wifi.selectMqtt가 true일 경우 MQTT를 통해 전송
+      else if (!ble.isConnected && wifi.ssid[0] != '\0' && wifi.selectMqtt) {
+      if (!client.connected()) {
+        reconnectMQTT();
+      }
+      if (client.connected()) {
         publishMqtt();
-        Serial.println("Data by mqtt");
+        Serial.println("Data sent via MQTT");
+        }
       }
-      else {
-        writeToBle(2);
-        Serial.println("Data by Ble");
+      // 조건 3: BLE 연결이 없고, MQTT 연결 정보가 있으나 wifi.selectMqtt가 false일 경우 MQTT를 통해 전송
+      else if (!ble.isConnected && wifi.ssid[0] != '\0' && !wifi.selectMqtt) {
+      if (!client.connected()) {
+        reconnectMQTT();
       }
-        
+      if (client.connected()) {
+        publishMqtt();
+        Serial.println("Data sent via MQTT with stored settings");
+        }
+      }
+      // 이전 bat와 adc 값을 업데이트
+      lasttemperature = dev.temperature;
+      lasthumidity = dev.humidity;  
       Serial.println(dev.sendData);
-      //Serial.println(dev.strInPre);
-      //Serial.println(dev.strIn);
-    }
-  }
-}
+    }// changed
+  } // internal
+} // dotick
 
 // Config 파일을 SPIFFS에서 읽어오는 함수
 void loadConfigFromSPIFFS() {
@@ -171,14 +191,17 @@ void loadConfigFromSPIFFS() {
   wifi.ssid = doc["ssid"] | "";
   wifi.password = doc["password"] | "";
   wifi.mqttBroker = doc["mqttBroker"] | "";
+  wifi.email = doc["email"] | "";
   wifi.use = doc["use"] | false;
 
   Serial.print("wifi.ssid: "); Serial.println(wifi.ssid);
   Serial.print("wifi.password: "); Serial.println(wifi.password);
   Serial.print("wifi.mqttBroker: "); Serial.println(wifi.mqttBroker);
+  Serial.print("wifi.email: "); Serial.println(wifi.email);
   Serial.print("wifi.use: "); Serial.println(wifi.use);
 
   configFile.close();
+
 }
 
 void saveConfigToSPIFFS() {
@@ -217,11 +240,13 @@ void saveConfigToSPIFFS() {
   doc["ssid"] = wifiSave.ssid;
   doc["password"] = wifiSave.password;
   doc["mqttBroker"] = wifiSave.mqttBroker;
+  doc["email"] = wifiSave.email;
   doc["use"] = wifiSave.use;
 
   Serial.print("wifi.ssid: "); Serial.println(wifiSave.ssid);
   Serial.print("wifi.password: "); Serial.println(wifiSave.password);
   Serial.print("wifi.mqttBroker: "); Serial.println(wifiSave.mqttBroker);
+  Serial.print("wifi.email: "); Serial.println(wifiSave.email);
   Serial.print("wifi.use: "); Serial.println(wifiSave.use);
 
   if (serializeJson(doc, configFile) == 0) {
@@ -294,6 +319,7 @@ void saveConfigToSPIFFS01() {
   doc["ssid"] = "aa";
   doc["password"] = "bb";
   doc["mqttBroker"] = "cc";
+  doc["email"] = "dd";
   doc["use"] = a;
 
   // 파일에 JSON 시리얼라이즈

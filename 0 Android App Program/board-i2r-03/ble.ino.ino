@@ -9,6 +9,7 @@ void writeToBle(int order) {
     responseDoc["ssid"] = wifi.ssid;
     responseDoc["password"] = wifi.password;
     responseDoc["mqttBroker"] = wifi.mqttBroker;
+    responseDoc["email"] = wifi.email;
     responseDoc["use"] = wifi.use;
   }
 

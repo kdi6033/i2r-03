@@ -44,6 +44,7 @@ struct DataWifiMqtt {
   String ssid="";
   String password="";
   String mqttBroker = ""; // 브로커 
+  String email="";
   char outTopic[50]="";  // "Ble mac address/out" 로 생성
   char inTopic[50]="";   // "Ble mac address/in" 으로 생성
 };
@@ -53,6 +54,9 @@ DataDevice dev;
 DataBle ble;
 DataWifiMqtt wifi,wifiSave;
 
+// 전역 변수
+float lasthumidity = 0.0;
+float lasttemperature = 0.0;
 WiFiClient espClient;
 PubSubClient client(espClient);
 

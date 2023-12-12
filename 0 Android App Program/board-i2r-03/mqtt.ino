@@ -15,9 +15,6 @@ void callback(char* topic, byte* payload, unsigned int length) {
 void publishMqtt()
 { 
   char msg[200];
-
-  //if(wifi.isConnected != 1)
-  //  return;
   client.publish(wifi.outTopic, dev.sendData.c_str());
 }
 
