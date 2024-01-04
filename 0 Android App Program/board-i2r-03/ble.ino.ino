@@ -3,16 +3,6 @@
 void writeToBle(int order) {
   // Create a JSON object
   DynamicJsonDocument responseDoc(1024);
-  // Fill the JSON object based on the order
-  if (order == 1) {
-    responseDoc["order"] = order;
-    responseDoc["ssid"] = wifi.ssid;
-    responseDoc["password"] = wifi.password;
-    responseDoc["mqttBroker"] = wifi.mqttBroker;
-    responseDoc["email"] = wifi.email;
-    responseDoc["use"] = wifi.use;
-  }
-
   // Serialize JSON object to string
   String responseString;
   serializeJson(responseDoc, responseString);
@@ -41,23 +31,19 @@ class MyServerCallbacks: public BLEServerCallbacks {
       wifi.isConnected = true; // Set the isConnected flag to true on connection
       Serial.println("Device connected");
       ble.isConnected = true;
-      //writeToBle(1); //이안에서는 실행되지 않음
+      wifi.selectMqtt = false;
       event = 1;
-      /*
-      for(int i=0;i<10;i++) {
-        writeToBle(100);
-        delay(3000);
-      }
-      */
     }
 
     void onDisconnect(BLEServer* pServer) {
       wifi.isConnected = false; // Set the isConnected flag to false on disconnection
       Serial.println("Device disconnected");
       ble.isConnected = false;
+      wifi.selectMqtt = true;
       BLEDevice::startAdvertising();  // Start advertising again after disconnect
     }
 };
+
 
 // 전송된 문자를 받는다.
 class MyCallbacks: public BLECharacteristicCallbacks {
@@ -101,20 +87,6 @@ void setupBLE() {
   Serial.println("BLE service started");
 }
 
-//사용된곳이 없는 합수
-void updateCharacteristicValue() {
-  char buffer[50];
-  Serial.println(counter);
-  snprintf(buffer, sizeof(buffer), "%u", counter++);
-  pCharacteristic->setValue(buffer);
-  pCharacteristic->notify();
-  // MQTT에 데이터 전송
-  if (client.connected()) {
-    String topic = "esp32/ble_data";
-    client.publish(topic.c_str(), buffer);
-  }
-}
-
 void readBleMacAddress() {
   // BLE 디바이스에서 MAC 주소를 가져옵니다.
   BLEAddress bleAddress = BLEDevice::getAddress();
@@ -122,11 +94,11 @@ void readBleMacAddress() {
   dev.mac = bleAddress.toString().c_str();
   // MAC 주소를 모두 대문자로 변환합니다.
   dev.mac.toUpperCase();
-  // MQTT 토픽을 설정합니다.
-  snprintf(wifi.outTopic, sizeof(wifi.outTopic), "%s/out", dev.mac.c_str());
-  snprintf(wifi.inTopic, sizeof(wifi.inTopic), "%s/in", dev.mac.c_str());
-  
-  // 시리얼 모니터에 BLE MAC 주소를 출력합니다.
+  // BLE MAC 주소를 기반으로 하는 MQTT 토픽 설정
+  snprintf(wifi.outTopic, sizeof(wifi.outTopic), "i2r/EasyPLC/%s/out", dev.mac.c_str());
+  snprintf(wifi.inTopic, sizeof(wifi.inTopic), "i2r/EasyPLC/%s/in", dev.mac.c_str());
+
+  // 시리얼 모니터에 BLE MAC 주소 및 MQTT 토픽을 출력합니다.
   Serial.printf("BLE MAC Address: %s, Out Topic: %s, In Topic: %s\n", dev.mac.c_str(), wifi.outTopic, wifi.inTopic);
 }
 
