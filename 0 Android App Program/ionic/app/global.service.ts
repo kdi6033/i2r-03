@@ -229,8 +229,8 @@ public attemptAutoReconnect() {
   }
   postConnectionSetup(device: BleDevice) {
     // 토픽 설정 및 기타 설정
-    this.wifi.outTopic = `/${device.deviceId}/in`;
-    this.wifi.inTopic = `/${device.deviceId}/out`;
+    this.wifi.outTopic = `i2r/EasyPLC/${device.deviceId}/in`;
+    this.wifi.inTopic = `i2r/EasyPLC/${device.deviceId}/out`;
     console.log("outTopic", this.wifi.outTopic);
     console.log("inTopic", this.wifi.inTopic);
 
