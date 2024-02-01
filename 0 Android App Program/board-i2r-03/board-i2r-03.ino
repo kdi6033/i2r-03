@@ -128,6 +128,13 @@ void setup() {
   dev.temperature = 0.0;
 
   loadConfigFromSPIFFS();
+  
+  setupBLE();
+  // BLE이 제대로 초기화될 수 있도록 약간의 시간을 기다립니다.
+  delay(1000);
+  // 이제 BLE MAC 주소를 읽어 봅니다.
+  readBleMacAddress();
+  Serial.println("BLE ready!");
   delay(500);
   if (wifi.use) {
     // Wi-Fi 연결 설정
@@ -140,12 +147,6 @@ void setup() {
   } else {
     Serial.println("Wi-Fi and MQTT setup skipped as wifi.use is false.");
   }
-  setupBLE();
-  // BLE이 제대로 초기화될 수 있도록 약간의 시간을 기다립니다.
-  delay(1000);
-  // 이제 BLE MAC 주소를 읽어 봅니다.
-  readBleMacAddress();
-  Serial.println("BLE ready!");
 }
 
 /* 블루투스 함수 ===============================================*/
@@ -395,7 +396,7 @@ void parseJSONPayload(byte *payload, unsigned int length) {
     int no = doc["no"] | -1;  // 유효하지 않은 인덱스로 초기화
     bool value = doc["value"] | false;
     dev.out[no] = value;
-
+    String State = "";
     // "no" 값이 유효한 범위 내에 있는지 확인하고, "out" 배열에 "value"를 설정합니다.
     if (no >= 0 && no < 8) {
       dev.out[no] = value ? 1 : 0;  // "true"이면 1로, "false"이면 0으로 설정
@@ -404,8 +405,9 @@ void parseJSONPayload(byte *payload, unsigned int length) {
       Serial.print("] 값이 ");
       Serial.print(value ? "true" : "false");
       Serial.println("로 설정되었습니다.");
-      returnMsg = String(no) + "번이 " + value + " 설정 되었습니다.";
-
+      if(value) State = "ON";
+      else State = "OFF";
+      returnMsg=String(no)+"번 "+State;
       prepareDataForMqtt();  // MQTT를 통해 데이터 전송
     } else {
       Serial.println("유효하지 않은 'no' 값입니다.");
@@ -781,6 +783,7 @@ void loop() {
       }
     }
   }
+
   if (event != 0) {
     writeToBle(event);
     event = 0;
