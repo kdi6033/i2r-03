@@ -17,21 +17,18 @@ export class LogMessagePage implements OnInit {
   constructor(private modalController: ModalController,public globalService: GlobalService,) { }
 
   ngOnInit() {
+    this.messageLog = this.globalService.loadMessageLogFromLocalStorage();
     this.paginateLogs();
   }
-
+  deleteAllLogs() {
+    this.messageLog = []; // Clear all log entries
+    this.globalService.saveMessageLogToLocalStorage(this.messageLog); // Save the empty array to local storage
+    this.paginateLogs(); // Refresh the paginated logs to reflect the deletion
+  }
   paginateLogs() {
     const startIndex = (this.currentPage - 1) * this.logsPerPage;
     const endIndex = startIndex + this.logsPerPage;
     this.paginatedLogs = this.messageLog.slice(startIndex, endIndex);
-  }
-  deleteAllLogs() {
-    this.messageLog = [];
-    // Clear all log entries
-    this.globalService.saveMessageLogToLocalStorage(this.messageLog);
-    // Save the empty array to local storage
-    this.paginateLogs();
-    // Refresh the paginated logs to reflect the deletion
   }
   deleteLog(index: number) {
     // Calculate actual index in messageLog based on pagination

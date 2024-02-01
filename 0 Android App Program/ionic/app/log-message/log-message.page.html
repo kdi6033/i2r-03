@@ -2,10 +2,11 @@
   <ion-toolbar>
     <ion-title>Log 기록</ion-title>
 
-    <ion-buttons slot="end">
-      <!-- <ion-button (click)="deleteAllLogs()">Delete All Logs</ion-button> -->
+    <ion-buttons [collapse]="true" slot="end">
+      <ion-button (click)="deleteAllLogs()">전체 삭제</ion-button>
       <ion-button (click)="dismissModal()">닫기</ion-button>
     </ion-buttons>
+    
   </ion-toolbar>
 
   <ion-list>

@@ -19,9 +19,9 @@
             <div class="flex-1">
               <div style="display: flex; align-items: center; justify-content: space-between;">
                 <!-- 항상 기기찾기 버튼을 보여줍니다 -->
-                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full" (click)="scanAndConnect()">
-                  +
-              </button>
+              <ion-button (click)="scanAndConnect()">
+                +
+              </ion-button>
                 <!-- LED 표시: 연결 상태에 따라 클래스가 변경됩니다 -->
                 <div [class.led-on]="globalService.ble.isConnected" [class.led-off]="!globalService.ble.isConnected"></div> <!-- LED 표시: 연결 상태에 따라 클래스가 변경됩니다 -->
                 <!-- <div *ngIf="globalService.ble.isConnected" [class.led-on]="globalService.ble.isConnected" [class.led-off]="!globalService.ble.isConnected"></div> -->
@@ -31,9 +31,7 @@
               </div>
               <br>
               <div *ngIf="connectedDeviceName" (click)="openNewTab()">
-                <div class="device-image-container">
-                  <img class="device-image" [src]="getDeviceImageUrl(connectedDeviceName)" alt="Device Image">
-                </div>
+
               </div>
 
                 <!-- 연결되었을 때만 블루투스 장치 정보를 보여줍니다 -->
@@ -41,7 +39,6 @@
                   <p>장치 이름: {{ globalService.ble.connectedDevice.name }}</p>
                   <!-- <p>장치 ID: {{ globalService.ble.connectedDevice.deviceId }}</p> -->
                 </div>
-                <div class="hidden" id="wifiInfo">
 
                   <ion-item>
                     <ion-input label="SSID (와이파이 이름)" [(ngModel)]="globalService.wifi.ssid"></ion-input>
@@ -75,21 +72,22 @@
                       <ion-label>Wi-Fi 사용 (블루투스는 중지됨)</ion-label>
                       <ion-toggle [(ngModel)]="globalService.wifi.use" ></ion-toggle>
                     </ion-item> -->
-
-                    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-2" (click)="saveAndSendWifiInfo()">저장 및 전송</button><br>
-                    <button class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded"  (click)="downloadFirmware()">펌웨어 다운로드</button>
-                    <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mb-2" (click)="resetSavedDevice()">저장된 기기 리셋</button>
+                    <div>
+                      <ion-button (click)="saveAndSendWifiInfo()">저장</ion-button>
+                      <ion-button (click)="downloadFirmware()">펌웨어 다운로드</ion-button>
+                      </div>
+                    <!-- <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mb-2" (click)="resetSavedDevice()">저장된 기기 리셋</button> -->
                 </div>
-            </div>
 
         </div>
     </div>
 </div>
-  <br><br>&nbsp;
-  <a href="hhttps://smartstore.naver.com/i2r/products/8285011211">구매</a>
+  <!-- <br><br> -->
   &nbsp;
-  <a href="https://youtu.be/lZQ763ljGjE">유튜브설명</a>
+  <a href="https://smartstore.naver.com/i2r/products/8285011211">구매</a>
   &nbsp;
-  <a href="https://github.com/kdi6033/i2r-04">메뉴얼</a>
+  <a href="https://youtu.be/kLyZGZ_iQro?si=j1howcDip6n8Z9zi">유튜브설명</a>
+  &nbsp;
+  <a href="https://github.com/kdi6033/i2r-03">메뉴얼</a>
 
 </ion-content>

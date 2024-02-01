@@ -229,8 +229,8 @@ public attemptAutoReconnect() {
   }
   postConnectionSetup(device: BleDevice) {
     // 토픽 설정 및 기타 설정
-    this.wifi.outTopic = `i2r/EasyPLC/${device.deviceId}/in`;
-    this.wifi.inTopic = `i2r/EasyPLC/${device.deviceId}/out`;
+    this.wifi.outTopic = `i2r/${device.deviceId}/in`;
+    this.wifi.inTopic = `i2r/${device.deviceId}/out`;
     console.log("outTopic", this.wifi.outTopic);
     console.log("inTopic", this.wifi.inTopic);
 
@@ -281,10 +281,9 @@ public attemptAutoReconnect() {
  // 수신된 메시지를 처리하는 함수
  processReceivedMessage(jsonString: string) {
   try {
-    console.log("message:",jsonString)
+    console.log("processReceivedMessage",jsonString)
     // JSON 문자열을 객체로 파싱합니다.
     const messageObject = JSON.parse(jsonString);
-
     // 'order' 값에 따라 다른 처리를 수행합니다.
     switch (messageObject.order) {
       case 1:
@@ -414,6 +413,7 @@ async checkAndReconnectBluetooth() {
     if (order === 0) {
       data = {
         order: 0,
+        fileName: "i2r-03-ai.ino.bin",
         message: "download firmware"
       };
     }
@@ -424,7 +424,6 @@ async checkAndReconnectBluetooth() {
         password: this.wifi.password,
         mqttBroker: this.wifi.mqttBroker,
         email: this.wifi.email,
-        // wifiUse: this.wifi.use,
         message: "board config"
       };
     }
@@ -496,7 +495,8 @@ connectToMQTT() {
     success: (s: any) => {
         console.log("connect success MQTT");
         console.log("mqtt broker",this.wifi.mqttBroker);
-        console.log("toopic",this.wifi.outTopic);
+        console.log("outpic",this.wifi.outTopic);
+        console.log("inpic",this.wifi.inTopic);
         console.log("email",this.wifi.email);
         this.wifi.isConnectedMqtt = true;
 
@@ -673,6 +673,7 @@ connectToMQTT() {
       console.error('Local Storage is not available');
     }
   }
+
 // GlobalService 클래스 내부
 loadMessageLogFromLocalStorage(): string[] {
   const storedLog = localStorage.getItem('messageLog');
