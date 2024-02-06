@@ -449,8 +449,8 @@ void prepareDataForMqtt() {
       responseDoc["mac"] = dev.mac;
       responseDoc["in"] = strIn;
       responseDoc["out"] = strOut;
-      responseDoc["humidity"] = strHumidity;
-      responseDoc["temperature"] = strTemp;
+      responseDoc["humi"] = strHumidity;
+      responseDoc["temp"] = strTemp;
       dev.sendData = "";
       serializeJson(responseDoc, dev.sendData);
 
