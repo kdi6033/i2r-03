@@ -24,8 +24,8 @@ struct DataDevice {
   String mac = "";  // Bluetooth mac address 를 기기 인식 id로 사용한다.
   int out[8];
   int in[8];
-  float humidity;
-  float temperature;
+  float humi;
+  float temp;
   String strIn = "0000", strInPre = "0000";  // In[] 을 string으로 저장
   String sendData = "";                      // 보드의 입력,출려,전압 데이터를 json 형태로 저장
 };
@@ -124,8 +124,8 @@ void setup() {
     while (1) delay(10);
   }
 
-  dev.humidity = 0.0;
-  dev.temperature = 0.0;
+  dev.humi = 0.0;
+  dev.temp = 0.0;
 
   loadConfigFromSPIFFS();
   
@@ -430,16 +430,16 @@ void prepareDataForMqtt() {
     sensors_event_t humidity_event, temp_event;
     aht.getEvent(&humidity_event, &temp_event);
 
-    dev.humidity = humidity_event.relative_humidity;
-    dev.temperature = temp_event.temperature;
+    dev.humi = humidity_event.relative_humidity;
+    dev.temp = temp_event.temperature;
 
     strIn=String(dev.in[0])+String(dev.in[1])+String(dev.in[2])+String(dev.in[3]);
     strOut=String(dev.out[0])+String(dev.out[1])+String(dev.out[2])+String(dev.out[3]);
-    String strHumidity = String(dev.humidity, 1);
-    String strTemp = String(dev.temperature, 1);
+    String strHumidity = String(dev.humi, 1);
+    String strTemp = String(dev.temp, 1);
     dev.strInPre=dev.strIn;
     // 데이터 변경 여부 확인
-    bool dataChanged = !dev.strIn.equals(dev.strInPre) || dev.temperature != lasttemperature || dev.humidity != lasthumidity;
+    bool dataChanged = !dev.strIn.equals(dev.strInPre) || dev.temp != lasttemperature || dev.humi != lasthumidity;
 
     if (dataChanged) {
       DynamicJsonDocument responseDoc(2048);
@@ -493,8 +493,8 @@ void prepareDataForMqtt() {
         }
       }
       // 이전 bat와 adc 값을 업데이트
-      lasttemperature = dev.temperature;
-      lasthumidity = dev.humidity;  
+      lasttemperature = dev.temp;
+      lasthumidity = dev.humi;  
       Serial.println(dev.sendData);
     } // dataChanged
 }
