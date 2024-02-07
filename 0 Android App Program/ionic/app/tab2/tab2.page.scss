@@ -58,46 +58,6 @@
   justify-content: center;
   margin-right: 8px;
 }
-.slider {
-  width: 50px;
-  height: 25px;
-  border-radius: 9999px; /* equivalent to full in Tailwind's scale */
-  background-color: #0066ff; /* equivalent to bg-gray-300 in Tailwind's scale */
-  position: relative;
-  transition: all 0.3s;
-  &.on {
-    background-color: #4CAF50;
-  }
-}
-
-.slider-circle {
-  width: 25px;
-  height: 25px;
-  border-radius: 9999px; /* equivalent to full in Tailwind's scale */
-  background-color: white;
-  position: absolute;
-  top: 0;
-  left: 0;
-  transition: transform 0.3s;
-  &.on {
-    transform: translateX(25px);
-  }
-}
-.slider-box {
-
-  border: 1px solid #ffffff; // Example border
-  padding: 5px; // Example padding
-  border-radius: 8px; // Rounded corners
-  // margin: 5px 0; // Vertical margin for spacing
-  background-color: rgb(255, 255, 255);// Background color
-  // box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); // Box shadow for depth
-  margin-top: 4%;
-  margin-left: auto;
-  margin-right: auto;
-   // Optionally, set a specific width and height
-  width: 200px; // Example fixed width
-  height: auto; // Auto height based on content
-}
 .signal-on {
   color: #4CAF50; /* Green color for signal */
 }
@@ -111,24 +71,16 @@
 .text-green {
   color: #4CAF50; /* equivalent to text-green-500 in Tailwind's scale */
 }
-//전압 플래시
-@keyframes flashAnimation {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0; }
+.online {
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background-color: #4CAF50; /* LED가 켜졌을 때 */
 }
 
-.flash {
-  animation: flashAnimation 1s ease-in-out;
-}
-// log 기록
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-
-li {
-  background-color: #f0f0f0;
-  margin-bottom: 5px;
-  padding: 5px;
-  border-radius: 3px;
+.offline {
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background-color: red; /* LED가 꺼졌을 때 */
 }

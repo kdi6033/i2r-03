@@ -58,12 +58,12 @@ getDeviceImageUrl(deviceName: string): string {
 async scanAndConnect() {
   await this.globalService.scanAndConnect();
   // 여기서 연결 결과에 따른 추가 로직을 구현할 수 있습니다.
-  this.globalService.dev.isSliderOn = false;
-  this.globalService.wifi.selectMqtt = false;
-  // Update label classes
+  // this.globalService.dev.isSliderOn = false;
+  // this.globalService.wifi.selectMqtt = false;
+  // // Update label classes
 
-  this.globalService.wifi.bleLabelClass = 'text-blue';
-  this.globalService.wifi.wifiLabelClass = 'text-gray';
+  // this.globalService.wifi.bleLabelClass = 'text-blue';
+  // this.globalService.wifi.wifiLabelClass = 'text-gray';
 }
 
   // GlobalService의 disconnect 메서드를 호출하는 래퍼 함수

@@ -15,8 +15,9 @@ interface DataDevice {
   strInPre: string; // 이전 In[] 값을 저장
   sendData: string; // 보드의 입력, 출력, 전압 데이터를 json 형태로 저장
   no: number;     // 출력 밸브 번호를 전송
-  value: boolean; // 출력 밸브 번호를 전송
-  isSliderOn: boolean;
+  value: boolean; // 출력 밸브 값을 전송
+  isSliderOn: boolean;  // 와이파이 블루투스 선택
+  noSelect: number;     // up down stop 선택
 }
 
 interface DataBle {
@@ -59,7 +60,8 @@ export class GlobalService {
     sendData: "",
     no: 100,
     value: false,
-    isSliderOn: false
+    isSliderOn: false,
+    noSelect: -1
   };
 
   // DataBle 타입의 객체 초기화
@@ -77,7 +79,7 @@ export class GlobalService {
     isConnectedMqtt: false,
     ssid: "",
     password: "",
-    mqttBroker: "",
+    mqttBroker: "ai.doowon.ac.kr", // broker의 초기값은 ai.doowon.ac.kr으로 첫번째 탭에서 따로 지정을 해주지 않을경우 기본값이 나가게 설정.
     customMqttBroker: "",
     email: "",
     outTopic: "",
@@ -162,7 +164,7 @@ export class GlobalService {
     }
   }
 async checkMQTTConnection() {
-  if (this.wifi.selectMqtt && !this.wifi.isConnectedMqtt) {
+  if (!this.wifi.isConnectedMqtt) {
     // MQTT가 선택되어 있지만 연결되어 있지 않은 경우
     try {
       await this.connectToMQTT();
@@ -175,14 +177,22 @@ async checkMQTTConnection() {
 ngOnInit() {
   this.autoReconnect();
 }
-private autoReconnect() {
-  // Check connection status every few seconds and reconnect if needed
-  this.intervalId = setInterval(() => {
-    if (!this.ble.isConnected) {
-      this.reconnectToSavedDevice();
-    }
-  }, 5000); // Check every 5 seconds
+private async autoReconnect() {
+  this.intervalId = setInterval(async () => {
+      if (!this.ble.isConnected) {
+          try {
+              await this.reconnectToSavedDevice();
+              if (!this.wifi.isConnectedMqtt) {
+                  await this.connectToMQTT();
+                  console.log("MQTT가 성공적으로 재연결되었습니다.");
+              }
+          } catch (error) {
+              console.error("재연결에 실패했습니다:", error);
+          }
+      }
+  }, 5000);
 }
+
 public attemptAutoReconnect() {
   // Logic to automatically reconnect to the saved device
   this.reconnectToSavedDevice();
@@ -217,6 +227,7 @@ public attemptAutoReconnect() {
     try {
       await BleClient.connect(device.deviceId);
       console.log('Connected to', device.name, 'with deviceId', device.deviceId);
+      this.dev.mac = device.deviceId;
       this.ble.connectedDevice = device;
       this.ble.isConnected = true;
 
@@ -244,7 +255,6 @@ public attemptAutoReconnect() {
         console.log('Disconnected from', this.ble.connectedDevice.name);
         this.ble.connectedDevice = null;
         this.ble.isConnected = false; // 연결 해제 시 전역 변수 업데이트
-        this.dev.isSliderOn = true;
         this.wifi.selectMqtt = true;
         // Update label classes
 
@@ -352,6 +362,7 @@ async checkAndReconnectBluetooth() {
     this.processMessage(message);
   }
 
+  //블루투스와 mqtt로 들어온 메세지를 최종 처리한다.
   private processMessage(jsonString: string) {
     try {
       console.log("------------------");
@@ -376,9 +387,18 @@ async checkAndReconnectBluetooth() {
 
       if (messageObject.humidity) {
         this.dev.humidity = parseFloat(messageObject.humidity);
+      } else if (messageObject.humi) {
+        this.dev.humidity = parseFloat(messageObject.humi);
       }
+
       if (messageObject.temperature) {
         this.dev.temperature = parseFloat(messageObject.temperature);
+      } else if (messageObject.temp) {
+        this.dev.temperature = parseFloat(messageObject.temp);
+      }
+
+      if (messageObject.hasOwnProperty('noSelect')) {
+        this.dev.noSelect = messageObject.noSelect;
       }
 
       // dev.in 배열을 복사하여 로그로 출력
@@ -426,6 +446,22 @@ async checkAndReconnectBluetooth() {
         email: this.wifi.email,
         message: "board config"
       };
+      if (data && this.ble.connectedDevice) {
+        console.log("via Bluetooth:");
+        const uint8Array = new TextEncoder().encode(JSON.stringify(data));
+        const dataView = new DataView(uint8Array.buffer);
+        try {
+          await BleClient.write(
+            this.ble.connectedDevice.deviceId,
+            this.ble.SERVICE_UUID,
+            this.ble.CHARACTERISTIC_UUID,
+            dataView
+          );
+          console.log('Data sent successfully via Bluetooth');
+        } catch (error) {
+          console.error('Failed to send data via Bluetooth:', error);
+        }
+      }
     }
     else if (order === 2) {
       // 첫 번째 연결에서 보드 설정 값을 요청하는 메시지
@@ -442,6 +478,14 @@ async checkAndReconnectBluetooth() {
         order: 3,
         value: this.wifi.selectMqtt,
         message: "select Mqtt"
+      };
+    }
+    else if (order === 4) {
+      // 와이파이 사용하는지?
+      data = {
+        order: 4,
+        noSelect: this.dev.noSelect,
+        message: "select up down stop"
       };
     }
     else {
@@ -537,7 +581,7 @@ connectToMQTT() {
 
   setMessageListener() {
     cordova.plugins.CordovaMqTTPlugin.listen(this.wifi.inTopic, (payload: any, params: any) => {
-      // 수신된 메시지를 처리합니다.
+      // mqtt 수신된 메시지를 처리합니다.
       try {
         this.processReceivedMessage(payload);
       } catch (e) {
@@ -587,14 +631,13 @@ connectToMQTT() {
   // MQTT 연결 상태를 주기적으로 확인하고 재연결을 시도하는 메서드
   startMQTTReconnect() {
     this.intervalId = setInterval(async () => {
-      if (this.wifi.selectMqtt && !this.wifi.isConnectedMqtt) {
         try {
           await this.connectToMQTT();
           console.log('MQTT 재연결 시도');
         } catch (error) {
           console.error('MQTT 재연결 실패:', error);
         }
-      }
+
     }, 2000); // 예: 2초마다 실행
   }
 
@@ -696,6 +739,13 @@ saveSelectMqttToLocalStorage() {
   }
 }
 
-
+  // 현장에서 동작 시켰을 때 html에 상태 표시
+  getNoSelectStatus(): string {
+    switch (this.dev.noSelect) {
+      case 0: return "올림";
+      case 1: return "내림";
+      default: return "정지";
+    }
+  }
 
 }

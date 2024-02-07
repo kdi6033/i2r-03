@@ -36,8 +36,8 @@
 
                 <!-- 연결되었을 때만 블루투스 장치 정보를 보여줍니다 -->
                 <div *ngIf="globalService.ble.connectedDevice">
+                  <p>장치 MAC 주소: {{ globalService.dev.mac }}</p>
                   <p>장치 이름: {{ globalService.ble.connectedDevice.name }}</p>
-                  <!-- <p>장치 ID: {{ globalService.ble.connectedDevice.deviceId }}</p> -->
                 </div>
 
                   <ion-item>
@@ -55,9 +55,9 @@
                     <ion-item>
                       <ion-label position="stacked">MQTT Broker</ion-label>
                       <ion-select [(ngModel)]="globalService.wifi.mqttBroker" (ionChange)="onMqttBrokerChange($event)" interface="popover">
+                        <ion-select-option value="ai.doowon.ac.kr">ai.doowon.ac.kr</ion-select-option>
                         <ion-select-option value="test.mosquitto.org">test.mosquitto.org</ion-select-option>
                         <ion-select-option value="broker.mqtt-dashboard.com">broker.mqtt-dashboard.com</ion-select-option>
-                        <ion-select-option value="ai.doowon.ac.kr">ai.doowon.ac.kr</ion-select-option>
                         <ion-select-option value="custom">직접입력</ion-select-option>
                       </ion-select>
                     </ion-item>

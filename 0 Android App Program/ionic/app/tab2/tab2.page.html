@@ -7,7 +7,7 @@
     </ion-toolbar>
   </ion-header>
 <!-- BLE and WiFi Toggle -->
-<div class="slider-box">
+<!-- <div class="slider-box">
   <div class="slider-section">
     <div class="flex justify-between mt-2">
       <span [class]="bleLabelClass">BLE</span>
@@ -17,7 +17,10 @@
       <span [class]="wifiLabelClass">WiFi</span>
     </div>
   </div>
-</div> <br>
+</div> -->
+<!-- 통신상태
+<div [class.online]="globalService.wifi.isConnectedMqtt" [class.offline]="!globalService.wifi.isConnectedMqtt"></div> -->
+<br>
 <div class="value-box">출력</div>
 
 <div class="grid grid-cols-4 gap-4 mb-4">
@@ -49,13 +52,13 @@
   <div class="flex items-center justify-between mb-4">
     <div class="value-box">
       <div class="font-semibold text-gray-700">온도 :</div>
-      <div id="vbatValue" class="font-semibold text-gray-700 ml-2" [class.flash]="TempUpdated">
+      <div id="vbatValue" class="font-semibold text-gray-700 ml-2">
         {{ globalService.dev.temperature }}℃
       </div>
     </div>
     <div class="value-box">
       <div class="font-semibold text-gray-700">습도 :</div>
-      <div id="adcValue" class="font-semibold text-gray-700 ml-2" [class.flash]="HumiUpdated">
+      <div id="adcValue" class="font-semibold text-gray-700 ml-2">
         {{ globalService.dev.humidity }}%
       </div>
     </div>
@@ -64,8 +67,6 @@
   <div class="p-4 bg-white rounded shadow">
     <div class="flex justify-between items-center">
       <div>받은 메시지</div>
-      <!-- <button (click)="toggleMessageLog()">+</button> Add this button -->
-      <ion-button (click)="openLogModal()">log 기록</ion-button>
     </div>
     <div class="mt-2 p-2 bg-gray-200 rounded">{{ receivedMessage }}</div>
   </div>
