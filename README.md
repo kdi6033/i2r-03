@@ -34,12 +34,13 @@ BLE 를 활용해 근거리 제어가 가능합니다. IoT와 관련해 다양�
 <img width="682" alt="i2r-03-pin" src="https://github.com/kdi6033/i2r-03/assets/37902752/c558899e-9352-4e33-ac75-f2c6198489b3">
 <img width="290" alt="i2r-03 pin연결" src="https://github.com/kdi6033/i2r-03/assets/37902752/c6b66e41-fdee-4c61-b97e-6b73f4b7d3a7">
 
+# 입력확인 배선
+![i2r-03-입력배선](https://github.com/kdi6033/i2r-03/blob/main/%EC%9E%90%EB%A3%8C/i2r-03%20input%20%EB%B0%B0%EC%84%A0.png?raw=true)
+
 # Input Output 아두이노 프로그램
 입력과 출력, 온도, 습도를 측정하는 아두이노 기본 프로그램  
 [아두이노 소스프로그램 링크](https://github.com/kdi6033/i2r-03/tree/main/1%20input%20ouput/in-out)  
 [![Input Output 아두이노 프로그램](https://img.youtube.com/vi/CTg_foy56oA/0.jpg)](https://youtu.be/CTg_foy56oA)]  
-# 입력확인 배선
-![i2r-03-입력배선](https://github.com/kdi6033/i2r-03/blob/main/%EC%9E%90%EB%A3%8C/i2r-03%20input%20%EB%B0%B0%EC%84%A0.png?raw=true)
 
 # MQTT 통신 연결하기
 아두이노로 mqtt 통신을 연결한다.
