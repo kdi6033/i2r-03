@@ -1,3 +1,4 @@
+//2024-02-16
 #include <WiFi.h>
 #include <PubSubClient.h>
 #include <BLEDevice.h>
@@ -267,7 +268,6 @@ if (client.connected()) {
     // }
   } else {
     Serial.println("MQTT not connected. Attempting to reconnect...");
-    Serial.print("272");
     reconnectMQTT(); // MQTT에 재연결 시도
   }
 }
@@ -388,6 +388,7 @@ void parseJSONPayload(byte *payload, unsigned int length) {
   }
   returnMessage();
 }
+
 void prepareDataForMqtt() {
     String strIn,strOut;
     sensors_event_t humidity_event, temp_event;
