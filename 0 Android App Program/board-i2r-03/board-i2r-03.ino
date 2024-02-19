@@ -419,14 +419,14 @@ void prepareDataForMqtt() {
       serializeJson(responseDoc, dev.sendData);
 
       // MQTT에 연결되어 있을 경우 항상 MQTT로 데이터 전송
-      if (client.connected()) {
-        publishMqtt();
+      if (!client.connected()) {
+        writeToBle(2);
+        Serial.println("BLE");
         Serial.println(dev.sendData);
       } 
       // MQTT에 연결되어 있지 않고 BLE에 연결되어 있을 경우 BLE로 데이터 전송
-      else if (!client.connected() && ble.isConnected && pCharacteristic) {
-        writeToBle(2);
-        Serial.println("BLE");
+      else {        
+        publishMqtt();
         Serial.println(dev.sendData);
       }
       // 이전 bat와 adc 값을 업데이트
