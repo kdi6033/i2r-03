@@ -418,13 +418,14 @@ void prepareDataForMqtt() {
       dev.sendData = "";
       serializeJson(responseDoc, dev.sendData);
 
-      // MQTT에 연결되어 있을 경우 항상 MQTT로 데이터 전송
+      // MQTT에 연결되어 있지 않을 경우 BLE로 데이터 전송
       if (!client.connected()) {
         writeToBle(2);
         Serial.println("BLE");
         Serial.println(dev.sendData);
       } 
-      // MQTT에 연결되어 있지 않고 BLE에 연결되어 있을 경우 BLE로 데이터 전송
+      
+      // MQTT에 연결되어 있을 경우 항상 MQTT로 데이터 전송
       else {        
         publishMqtt();
         Serial.println(dev.sendData);
