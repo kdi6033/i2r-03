@@ -20,6 +20,12 @@ WiFi Bluetooth PLC (4채널 릴레이, 온습도센서, ESP32) KC인증
 </a>
 </br>
 스마트폰에 어플 설치와 와이파이 연결을 보여줍니다. 그림을 크릭하세요  
+
+프로토콜
+|order|기능|설명 및 프로토콜|
+-----------------------------
+|0|펌웨어 다운로드|인터넷에서 통신으로 펌웨어를 보드로 내려 받는다|
+
 [아두이노 소스프로그램 링크](https://github.com/kdi6033/i2r-03/tree/main/0%20Android%20App%20Program/board-i2r-03)  
 [스마트폰 ionic 소스프로그램 링크](https://github.com/kdi6033/i2r-03/tree/main/0%20Android%20App%20Program)  
 [![21-3 안드로이드 어플 사용 블루투스 와이파이 MQTT 통신](https://img.youtube.com/vi/FT0muFM24xc/0.jpg)](https://youtu.be/FT0muFM24xc)
