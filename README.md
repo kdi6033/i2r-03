@@ -15,8 +15,7 @@ WiFi Bluetooth PLC (4채널 릴레이, 온습도센서, ESP32) KC인증
 
 # "Play 스토어" 에서 어플을 다운로드 하세요 프로그램 하지 않아도 원격으로 모니터링/제어 할 수 있습니다.  
 다운로드 QR CODE
-![다운로드 QR코드]![play store i2r](https://github.com/kdi6033/i2r-03/assets/37902752/4f55641c-9a50-4eda-8ada-3e0f6beb34c6)
-(https://play.google.com/store/apps/details?id=io.ionic.i2rReactIoT)<br>
+![다운로드 QR코드]!
 <a href="https://play.google.com/store/apps/details?id=io.ionic.i2rReactIoT">
     <img src="https://github.com/kdi6033/i2r-03/assets/37902752/4f55641c-9a50-4eda-8ada-3e0f6beb34c6" alt="다운로드 QR코드" width="200">
 </a>
