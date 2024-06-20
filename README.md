@@ -21,12 +21,12 @@ WiFi Bluetooth PLC (4채널 릴레이, 온습도센서, ESP32) KC인증
 </br>
 스마트폰에 어플 설치와 와이파이 연결을 보여줍니다. 그림을 크릭하세요  
 
-프로토콜
+# 프로토콜
 |order|기능|설명 및 프로토콜|
 |-----|----|----------------|
 |0|펌웨어 다운로드|인터넷에서 통신으로 펌웨어를 보드로 내려 받는다<br> {'order':0,'fileName'='i2r-03.ino.bin'}|
 |1|정보 입력|와이파이 및 통신에 필요한 정보를 보내 보드에 기록한다.<br> {'ssid':'***','password'='***', 'email':'***', 'mqttBroker':'ai.doowon.ac.kr'}|
-
+|2|출력| IoT PLC의 포트번호(0,1,2,3 4개)와 true/false를 보내면 릴레이가 동작한다. <br> 2번째 릴레이 on을 시키려면 <br> {'order':2,'no'=1,'value':true} |
 
 [아두이노 소스프로그램 링크](https://github.com/kdi6033/i2r-03/tree/main/0%20Android%20App%20Program/board-i2r-03)  
 [스마트폰 ionic 소스프로그램 링크](https://github.com/kdi6033/i2r-03/tree/main/0%20Android%20App%20Program)  
