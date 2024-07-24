@@ -37,9 +37,11 @@ WiFi Bluetooth PLC (4채널 릴레이, 온습도센서, ESP32) KC인증
 다양한 장치를 연결해서 손쉽게 원격제어 시스템을 구현해보세요. 모든 소스프로그램은 설명글 하단을 참조하세요.
 릴레이에 연결된 ESP32핀은 왼쪽부터 각각 33 32 27 26 입니다.
 
-1) AHT21 온습도 센서  
+1) AHT21 온습도 센서
+   ![AHT21] 핀배치도 (https://github.com/user-attachments/assets/70008ecd-99a8-40aa-878d-b948978d42f0)
+
    ![AHT21 온습도 센서](https://github.com/kdi6033/i2r-03/assets/37902752/50d9bb01-52b8-4f5f-91c6-f7fc9e98609e)
-2) WiFi, BLE 통신  
+3) WiFi, BLE 통신  
 ESP32가 탑재되어 WiFi, BLE 통신 가능합니다. WiFi 를 활용해 PC 및 스마트폰에서 4채널 릴레이를
 원격제어 및 모니터링 가능합니다. 또한 AHT20 온습도 센서의 정보를 실시간 모니터링할 수 있습니다.
 BLE 를 활용해 근거리 제어가 가능합니다. IoT와 관련해 다양하게 활용 가능합니다.
