@@ -29,10 +29,6 @@ WiFi Bluetooth PLC (4채널 릴레이, 온습도센서, ESP32) KC인증
 |2|출력| IoT PLC의 포트번호(0,1,2,3 4개)와 true/false를 보내면 릴레이가 동작한다. <br> 2번째 릴레이 on을 시키려면 <br> {'order':2,'no'=1,'value':true} |
 |3|상태전송|보드의 현재 상태를 mqtt로 보낸다.<br>요청 : {'order':2,'no'=1,'value':true} <br> 응답예시 
 {"type":3,"email":"kdi6033@gmail.com","mac":"EC:64:C9:43:E8:B8","temp":28.4,"humi":38,"in":[0,0,0,0],"out":[0,0,0,0]}|
-
-
-
-
 |4|동작시간설정|보드의 동작시간을 일일 일주 단위로 설정한다.|
 
 
