@@ -22,6 +22,8 @@ WiFi Bluetooth PLC (4채널 릴레이, 온습도센서, ESP32) KC인증
 스마트폰에 어플 설치와 와이파이 연결을 보여줍니다. 그림을 크릭하세요  
 
 # 프로토콜
+[프로토콜](https://github.com/kdi6033/i2r/blob/main/README.md#프로토콜)
+
 |order|  기능  |설명 및 프로토콜|
 |--|-------|---|
 |0|펌웨어 다운로드|인터넷에서 통신으로 펌웨어를 보드로 내려 받는다<br> {'order':0,'fileName'='i2r-03.ino.bin'}|
