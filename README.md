@@ -28,7 +28,7 @@ WiFi Bluetooth PLC (4채널 릴레이, 온습도센서, ESP32) KC인증
 
 [아두이노 소스프로그램 링크](https://github.com/kdi6033/i2r-03/tree/main/0%20Source-Program-IoT/board-i2r-03)  
 
-[스마트폰 ionic 소스프로그램 링크](https://github.com/kdi6033/i2r-03/tree/main/0%20Source-Program-IoT/board-i2r-03-aws)  
+[AWS 아두이노 소스프로그램 링크](https://github.com/kdi6033/i2r-03/tree/main/0%20Source-Program-IoT/board-i2r-03-aws)  
 
 [nodeRed 소스프로그램 링크](https://github.com/kdi6033/i2r/blob/main/0%20Source-Program-IOT/nodered-local.json)  
 
