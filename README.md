@@ -68,7 +68,7 @@ IoT MQTT Panel을 이용해 스마트폰으로 보드의 Relay를 제어 한다.
 <br>     
 <details>
     <summary>💻 HMI 터치판넬 프로그램</summary>
-```
+```c
 //원본 2025.11.20
 //on 연두색 0x32CD32 : off 회색 0xC0C0C0
 #include <lvgl.h>
