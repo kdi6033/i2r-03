@@ -66,9 +66,8 @@ IoT MQTT Panel을 이용해 스마트폰으로 보드의 Relay를 제어 한다.
 
 # CrowPanel Pico Display 3.5" HMI 모듈
 
+[📌 판넬 사양은 다음 링크를 참조하세요](https://github.com/kdi6033/i2r#crowpanel-pico-display-35-hmi-%EB%AA%A8%EB%93%88)
 <br>     
-
-
 <details>
     <summary>💻 HMI 터치판넬 프로그램 </summary>
 
