@@ -65,10 +65,15 @@ IoT MQTT Panel을 이용해 스마트폰으로 보드의 Relay를 제어 한다.
 [![MQTT 통신 연결하기](https://img.youtube.com/vi/u4NejCu5xnw/0.jpg)](https://youtu.be/u4NejCu5xnw)]  
 
 # CrowPanel Pico Display 3.5" HMI 모듈
+
 <br>     
+
+
 <details>
-    <summary>💻 HMI 터치판넬 프로그램</summary>
+    <summary>💻 HMI 터치판넬 프로그램 </summary>
+
 ```c
+// ✅ 여기에 C 코드 작성
 //원본 2025.11.20
 //on 연두색 0x32CD32 : off 회색 0xC0C0C0
 #include <lvgl.h>
@@ -704,5 +709,6 @@ void parseJSONPayload(byte* payload, unsigned int length) {
   }
   
 }
+
 ```
 </details>
